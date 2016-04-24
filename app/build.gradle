@@ -10,6 +10,7 @@ android {
         targetSdkVersion 23
         versionCode 1
         versionName "1.0"
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
         release {
@@ -30,4 +31,8 @@ dependencies {
     compile 'com.squareup.okhttp:okhttp:2.5.0'
     compile 'com.squareup.retrofit:converter-gson:2.0.0-beta2'
     compile 'com.squareup.picasso:picasso:2.5.2'
+    compile 'junit:junit:4.12'
+    compile 'com.android.support.test.espresso:espresso-idling-resource:2.2'
+    compile 'com.android.support.test:rules:0.3'
+    compile 'com.android.support.test.espresso:espresso-core:2.2'
 }
