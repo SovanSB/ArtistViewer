@@ -3,6 +3,7 @@ package com.yandex.mobile_school.artistviewer.activity;
 import android.app.Activity;
 import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -42,8 +43,10 @@ public class ArtistActivity extends AppCompatActivity implements ObservableScrol
 
             Toolbar toolbar = (Toolbar) findViewById(R.id.toolbarArt);
             setSupportActionBar(toolbar);
-            String name = cursor.getString(cursor.getColumnIndex(ArtistItem.Columns.NAME));
+            String name = "←  " + cursor.getString(cursor.getColumnIndex(ArtistItem.Columns.NAME));
             this.setTitle(name);
+            toolbar.setTitleTextColor(0xFFFFFFFF);
+
 
 
             int albums = cursor.getInt(cursor.getColumnIndex(ArtistItem.Columns.ALBUMS));
@@ -93,7 +96,7 @@ public class ArtistActivity extends AppCompatActivity implements ObservableScrol
     }
 
 
-//    public void onLogoClick1(View view) {
-//        onBackPressed();
-//    }
+    public void onLogoClick1(View view) {
+        onBackPressed();
+    }
 }

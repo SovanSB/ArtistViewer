@@ -1,7 +1,8 @@
 <resources>
-    <string name="app_name">Исполнители</string>
+    <string name="app_name">Mobilization 2016</string>
+    <string name="act_main_name">Исполнители</string>
     <string name="menu_refresh">Обновить</string>
     <string name="data_refreshed">Список обновлён</string>
-    <string name="tewtViewBiography">Биография</string>
+    <string name="textViewBiography">Биография</string>
     <string name="menu_drop">Удалить базу</string>
 </resources>
