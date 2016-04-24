@@ -13,10 +13,14 @@ import com.squareup.picasso.Picasso;
 import com.yandex.mobile_school.artistviewer.R;
 import com.yandex.mobile_school.artistviewer.art.ArtistItem;
 
+import java.lang.ref.WeakReference;
+
 /**
  * Created by Sovan on 23.04.2016.
  */
 public class ArtistAdapter extends ResourceCursorAdapter {
+
+
     public ArtistAdapter(Context context, Cursor c) {
         super(context, R.layout.li_item, c, CursorAdapter.FLAG_REGISTER_CONTENT_OBSERVER);
     }
@@ -31,7 +35,7 @@ public class ArtistAdapter extends ResourceCursorAdapter {
         textViewGenres.setText(genres);
         int albums = cursor.getInt(cursor.getColumnIndex(ArtistItem.Columns.ALBUMS));
         int tracks = cursor.getInt(cursor.getColumnIndex(ArtistItem.Columns.TRACKS));
-        final String info = albumEnding(albums) + " • " + trackEnding(tracks);
+        final String info = historyString(albums, tracks);
         TextView textViewAlbums = (TextView) view.findViewById(R.id.textViewAlbums);
         textViewAlbums.setText(info);
         final String url = cursor.getString(cursor.getColumnIndex(ArtistItem.Columns.SMALL));
@@ -54,7 +58,7 @@ public class ArtistAdapter extends ResourceCursorAdapter {
         }
     }
 
-    String trackEnding(int num) {
+    public static String trackEnding(int num) {
         if (num < 0) {
             return "песен нет, ещё должен оказался!";
         }
@@ -78,7 +82,7 @@ public class ArtistAdapter extends ResourceCursorAdapter {
         return num + " песен";
     }
 
-    String albumEnding(int num) {
+    public static String albumEnding(int num) {
         if (num < 0) {
             return "албомов нет, ещё должен оказался!";
         }
@@ -100,5 +104,9 @@ public class ArtistAdapter extends ResourceCursorAdapter {
         }
 
         return num + " альбомов";
+    }
+
+    public static String historyString(int albumNum, int trackNum) {
+        return albumEnding(albumNum) + " • " + trackEnding(trackNum);
     }
 }

@@ -19,6 +19,10 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
+        <activity
+            android:name=".activity.ArtistActivity"
+            android:theme="@style/AppTheme.NoActionBar"
+            />
         <provider
             android:authorities="com.yandex.mobile_school.artistviewer"
             android:name=".sqlite.SQLiteProvider"/>

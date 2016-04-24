@@ -26,8 +26,11 @@ public class ArtistListLoader extends CursorLoader {
     final String mBaseUri;
     final String mEndPoint;
 
+
+
     public ArtistListLoader(Context context, String baseUri, String endPoint) {
         super(context, ArtistItem.URI, null, null, null, null);
+
         mBaseUri = baseUri;
         mEndPoint = endPoint;
     }
@@ -53,10 +56,12 @@ public class ArtistListLoader extends CursorLoader {
                 values.add(pic.toValues());
             }
             final ContentValues[] bulkCategories = values.toArray(new ContentValues[values.size()]);
-            ContentResolver db = getContext().getContentResolver();
-            // Clearing base before refreshing
-            db.delete(ArtistItem.URI, null, null);
-            db.bulkInsert(ArtistItem.URI, bulkCategories);
+            if (bulkCategories.length > 0) {
+                ContentResolver db = getContext().getContentResolver();
+                // Clearing base before refreshing
+                db.delete(ArtistItem.URI, null, null);
+                db.bulkInsert(ArtistItem.URI, bulkCategories);
+            }
 
         } catch (IOException e) {
             e.printStackTrace();

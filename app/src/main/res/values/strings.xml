@@ -1,4 +1,7 @@
 <resources>
     <string name="app_name">Исполнители</string>
-    <string name="action_settings">Settings</string>
+    <string name="menu_refresh">Обновить</string>
+    <string name="data_refreshed">Список обновлён</string>
+    <string name="tewtViewBiography">Биография</string>
+    <string name="menu_drop">Удалить базу</string>
 </resources>
