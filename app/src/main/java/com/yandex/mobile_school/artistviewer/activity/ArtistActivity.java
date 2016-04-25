@@ -2,6 +2,7 @@ package com.yandex.mobile_school.artistviewer.activity;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.database.Cursor;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
@@ -39,34 +40,50 @@ public class ArtistActivity extends AppCompatActivity implements ObservableScrol
         if (artist_id != Long.MIN_VALUE) {
             Cursor cursor = getContentResolver().query(ArtistItem.URI, null,
                     ArtistItem.Columns.ARTIST_ID + "=?", new String[]{Long.toString(artist_id)}, null);
-            cursor.moveToFirst();
+            if (cursor.getCount() > 0) {
+                cursor.moveToFirst();
 
-            Toolbar toolbar = (Toolbar) findViewById(R.id.toolbarArt);
-            setSupportActionBar(toolbar);
-            String name = "←  " + cursor.getString(cursor.getColumnIndex(ArtistItem.Columns.NAME));
-            this.setTitle(name);
-            toolbar.setTitleTextColor(0xFFFFFFFF);
+                Toolbar toolbar = (Toolbar) findViewById(R.id.toolbarArt);
+                setSupportActionBar(toolbar);
+                String name = "←  " + cursor.getString(cursor.getColumnIndex(ArtistItem.Columns.NAME));
+                this.setTitle(name);
+                toolbar.setTitleTextColor(0xFFFFFFFF);
 
 
+                int albums = cursor.getInt(cursor.getColumnIndex(ArtistItem.Columns.ALBUMS));
+                int tracks = cursor.getInt(cursor.getColumnIndex(ArtistItem.Columns.TRACKS));
+                ((TextView) findViewById(R.id.textViewAlbums2)).setText(ArtistAdapter.historyString(albums, tracks));
+                String description = cursor.getString(cursor.getColumnIndex(ArtistItem.Columns.NAME)) + ": " +
+                        cursor.getString(cursor.getColumnIndex(ArtistItem.Columns.DESCRIPTION));
+                ((TextView) findViewById(R.id.textViewInfo)).setText(description);
 
-            int albums = cursor.getInt(cursor.getColumnIndex(ArtistItem.Columns.ALBUMS));
-            int tracks = cursor.getInt(cursor.getColumnIndex(ArtistItem.Columns.TRACKS));
-            ((TextView) findViewById(R.id.textViewAlbums2)).setText(ArtistAdapter.historyString(albums, tracks));
-            String description = cursor.getString(cursor.getColumnIndex(ArtistItem.Columns.NAME)) + ": " +
-                    cursor.getString(cursor.getColumnIndex(ArtistItem.Columns.DESCRIPTION));
-            ((TextView) findViewById(R.id.textViewInfo)).setText(description);
+                ((TextView) findViewById(R.id.textViewGenres2)).setText(
+                        cursor.getString(cursor.getColumnIndex(ArtistItem.Columns.GENRES))
+                );
+                mLink = cursor.getString(cursor.getColumnIndex(ArtistItem.Columns.LINK));
+                final String imageUrl = cursor.getString(cursor.getColumnIndex(ArtistItem.Columns.BIG));
+                mImageView = (ImageView) findViewById(R.id.imageViewBig);
+                if (this.getRequestedOrientation() == ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE) {
+                    Picasso.with(this)
+                            .load(imageUrl)
+                            .fit()
+                            .centerInside()
+                            .error(R.mipmap.ic_launcher)
+                            .into(mImageView);
+                }
+                else {
+//                if (!TextUtils.isEmpty(imageUrl)) {
+                    Picasso.with(this)
+                            .load(imageUrl)
+                            .fit()
+                            .centerCrop()
+                            .error(R.mipmap.ic_launcher)
+                            .into(mImageView);
+                    //              }
+                }
 
-            ((TextView) findViewById(R.id.textViewGenres2)).setText(
-                    cursor.getString(cursor.getColumnIndex(ArtistItem.Columns.GENRES))
-            );
-            mLink = cursor.getString(cursor.getColumnIndex(ArtistItem.Columns.LINK));
-            final String imageUrl = cursor.getString(cursor.getColumnIndex(ArtistItem.Columns.BIG));
-            mImageView = (ImageView) findViewById(R.id.imageViewBig);
-            if (!TextUtils.isEmpty(imageUrl)) {
-                Picasso.with(this).load(imageUrl).fit().centerCrop().into(mImageView);
+                mScrollView = (ObservableScrollView) findViewById(R.id.scroll_view);
             }
-
-            mScrollView = (ObservableScrollView) findViewById(R.id.scroll_view);
         }
     }
 
@@ -88,11 +105,13 @@ public class ArtistActivity extends AppCompatActivity implements ObservableScrol
     }
 
     public void onClick(View view) {
-        if (!mLink.startsWith("http://") && !mLink.startsWith("https://")) {
-            mLink = "http://" + mLink;
+        if (!TextUtils.isEmpty(mLink)) {
+            if (!mLink.startsWith("http://") && !mLink.startsWith("https://")) {
+                mLink = "http://" + mLink;
+            }
+            Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(mLink));
+            startActivity(browserIntent);
         }
-        Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(mLink));
-        startActivity(browserIntent);
     }
 
 

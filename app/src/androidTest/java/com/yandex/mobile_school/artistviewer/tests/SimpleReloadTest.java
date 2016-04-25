@@ -1,6 +1,5 @@
 package com.yandex.mobile_school.artistviewer.tests;
 
-import android.support.test.InstrumentationRegistry;
 import android.support.test.espresso.IdlingResource;
 import android.test.ActivityInstrumentationTestCase2;
 
@@ -14,6 +13,7 @@ import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
+
 
 /**
  * Created by Sovan on 24.04.2016.
@@ -38,22 +38,25 @@ public class SimpleReloadTest extends ActivityInstrumentationTestCase2<MainActiv
 
     public void testDropUpdateDatabase() {
         openActionBarOverflowOrOptionsMenu(getInstrumentation().getTargetContext());
-       // openActionBarOverflowOrOptionsMenu(InstrumentationRegistry.getTargetContext());
         onView(withText(R.string.menu_drop))
                 .perform(click());
+
         openActionBarOverflowOrOptionsMenu(getInstrumentation().getTargetContext());
-        //openActionBarOverflowOrOptionsMenu(InstrumentationRegistry.getTargetContext());
+
         onView(withText(R.string.menu_refresh))
                 .perform(click());
-        IdlingResource resource = new ElapsedTimeIdlingResource(1000);
+
+        IdlingResource resource = new ElapsedTimeIdlingResource(500);
         registerIdlingResources(resource);
-        onView(withText("183"))
+        onView(withText("Usher"))
+                .perform(click());
+        IdlingResource openAct = new ElapsedTimeIdlingResource(500);
+        registerIdlingResources(openAct);
+        onView(withId(R.id.textViewAlbums2))
                 .check(matches(withText("183 альбома • 450 песен")));
-//        IdlingResource openAct = new ElapsedTimeIdlingResource(1000);
-//        registerIdlingResources(openAct);
-//        onView(withId(R.id.textViewGenres2))
 
 
     }
+
 
 }
